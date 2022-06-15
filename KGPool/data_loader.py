@@ -11,11 +11,12 @@ MAX_CHAR_LEN = 10
 CONV_FILTER_SIZE = 3
 MAX_INSTANCE = 5 #increase depending on memory 
 MAX_ALIAS = 5 #increase depending on memory 
-
-train_path = '../../NYT/dataset_triples_train.json' 
-test_path = '../../NYT/dataset_triples_test.json' 
-entity_detials_path = '../../NYT/dataset_context_en_all_TOKENS.json'
-relation_idx_path = '../../NYT/relation2id.txt'
+absolute_path = "/Users/haoyanghan/Documents/GitHub/KGPool"
+train_path = absolute_path + '/NYT/dataset_triples_train.json' 
+test_path = absolute_path + '/NYT/dataset_triples_test.json' 
+# entity_detials_path = absolute_path + '/NYT/dataset_context_en_all_TOKENS.json'
+entity_detials_path = absolute_path + '/NYT/dataset_context_en_all.json'
+relation_idx_path = absolute_path + '/NYT/relation2id.txt'
 
 def make_char_vocab(data):
     char_vocab = OrderedDict()
@@ -166,6 +167,7 @@ def create_dataset(data_array, entity_file, rel2idx):
     for data in data_list:
         graph = data['graph']
         left_entity = data['left_entity']
+        right_entity = data['right_entity']
         relation = data['relation']
         sentence_tokens = graph['tokens']
         edges = graph['edgeSet']

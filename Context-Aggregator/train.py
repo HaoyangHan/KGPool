@@ -44,12 +44,13 @@ def main_config():
     device_id = 0
     # 
     model_name = "GPGNN"
-    data_folder = "../realtion_extraction/NYT/"
-    save_folder = "../realtion_extraction/NYT/save_folder"
-    load_folder = "../realtion_extraction/NYT/kgppool_gpgnn/"
+    absolute_path = "/Users/haoyanghan/Documents/GitHub/KGPool"
+    data_folder = absolute_path + "/NYT/"
+    save_folder = absolute_path + "/realtion_extraction/NYT/save_folder"
+    load_folder = absolute_path + "/realtion_extraction/NYT/kgppool_gpgnn/"
     load_model = "model-80.out"
     model_params = "model_params.json"
-    word_embeddings = "../data/glove.6B.50d.txt"
+    word_embeddings = "/Users/haoyanghan/Documents/GitHub/data/glove.6B.50d.txt"
     train_set = "dataset_triples_train.json"
     val_set = ""
     test_set = "dataset_triples_test.json"
@@ -67,7 +68,7 @@ def main_config():
     kgpool_parser.add_argument('--dynamic_pooling3', type=float, default=True,
                         help='keep dynamic pooling for layer 3')     
 
-    
+
     kgpool_parser.add_argument('--input_dim', type=int, default=50, help='The input word embedding dimension')
     kgpool_parser.add_argument('--hidden_dim', type=int, default=50, help='The RNN hidden dimension')
     kgpool_parser.add_argument('--layers', type=int, default=1, help='Number of RNN layers')
@@ -102,6 +103,7 @@ def main_config():
 @ex.automain
 def main(model_params, model_name, data_folder, word_embeddings, train_set, val_set, test_set, property_index, learning_rate, shuffle_data, save_folder, load_folder, load_model, save_model, grad_clip, kgpool_args):
     if not os.path.exists(save_folder):
+        print(os.path.abspath(os.getcwd()))
         os.mkdir(save_folder)
 
     with open(model_params) as f:

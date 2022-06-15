@@ -228,14 +228,18 @@ def to_indices_with_real_entities_and_entity_nums_with_vertex_padding(graphs, wo
     :return:
     """
     graphs_to_process = []
+    print("length of the graph: ", len(graphs))
     for g in graphs:
-        if len(g['edgeSet']) > 0:
-            if len(g['edgeSet']) <= MAX_EDGES_PER_GRAPH:
-                graphs_to_process.append(g)
-            else:
-                continue # here we discard these data points
-                for i in range(0, len(g['edgeSet']), MAX_EDGES_PER_GRAPH):
-                    graphs_to_process.append({"tokens": g["tokens"], "edgeSet": g["edgeSet"][i:i+ MAX_EDGES_PER_GRAPH]})
+        try:
+            if len(g['edgeSet']) > 0:
+                if len(g['edgeSet']) <= MAX_EDGES_PER_GRAPH:
+                    graphs_to_process.append(g)
+                else:
+                    continue # here we discard these data points
+                    for i in range(0, len(g['edgeSet']), MAX_EDGES_PER_GRAPH):
+                        graphs_to_process.append({"tokens": g["tokens"], "edgeSet": g["edgeSet"][i:i+ MAX_EDGES_PER_GRAPH]})
+        except:
+            continue
     graphs = graphs_to_process
     sentences_matrix = np.zeros((len(graphs), max_sent_len), dtype="int32")
     entity_matrix = np.zeros((len(graphs), MAX_EDGES_PER_GRAPH, max_sent_len), dtype="int8")

@@ -9,8 +9,9 @@ from utils.embedding_utils import make_start_embedding, get_head_indices, get_ta
 import torch.nn.functional as F
 
 import sys
-sys.path.insert(1,'../../KGPool')
-from networks import  Net
+sys.path.insert(1,'/Users/haoyanghan/Documents/GitHub/KGPool/KGPool')
+# print(sys.path)
+from networks import Net
 
 
 class GPGNN(nn.Module):
@@ -127,8 +128,7 @@ class GPGNN(nn.Module):
             identity_stuffing = self.identity_transformation.repeat(sentence_input.size()[0] * 8, 1).view(sentence_input.size()[0], 8, 1, (self.p['embedding_dim'] * 2) ** 2)
             rnn_result = torch.cat([identity_stuffing, rnn_result], dim=2).view(sentence_input.size()[0], 80, (self.p['embedding_dim'] * 2) ** 2)
             identity_stuffing = self.identity_transformation.repeat(sentence_input.size()[0], 1).view(sentence_input.size()[0], 1, (self.p['embedding_dim'] * 2) ** 2)
-            adjecent_matrix = torch.cat([rnn_result, identity_stuffing], dim=1).view(sentence_input.size()[0], 9, 9, self.p['embedding_dim'] * 2, self.p['embedding_dim']
-                                                                                     * 2).transpose(dim0=2, dim1=3).contiguous().view(sentence_input.size()[0], self.p['embedding_dim'] * 18, self.p['embedding_dim'] * 18)
+            adjecent_matrix = torch.cat([rnn_result, identity_stuffing], dim=1).view(sentence_input.size()[0], 9, 9, self.p['embedding_dim'] * 2, self.p['embedding_dim']* 2).transpose(dim0=2, dim1=3).contiguous().view(sentence_input.size()[0], self.p['embedding_dim'] * 18, self.p['embedding_dim'] * 18)
 
             # adjecent_matrix = torch.matmul(adjecent_matrix, block_matrix).view(sentence_input.size()[0], 1, self.p['embedding_dim'] * 18, self.p['embedding_dim'] * 18)
             adjecent_matrix = adjecent_matrix.view(sentence_input.size()[0], 1, self.p['embedding_dim'] * 18, self.p['embedding_dim'] * 18)

@@ -35,7 +35,10 @@ class KGPool(torch.nn.Module):
                 indices = [x+off_set for x in indices]
                 perm += indices 
                 off_set += len(norm_scores)
-            perm = torch.Tensor(perm).type(torch.LongTensor).cuda()
+            if (torch.cuda.is_available()):
+                perm = torch.Tensor(perm).type(torch.LongTensor).cuda()
+            else:
+                perm = torch.Tensor(perm).type(torch.LongTensor)
         else:
             perm = topk(score, self.ratio, batch)
 

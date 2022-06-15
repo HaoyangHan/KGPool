@@ -40,14 +40,14 @@ class NodeFeature(nn.Module):
     def forward(self, words, chars):
         batch_size = words.shape[0]
         if len(words.shape)==3:
-          # max_batch_len = words.shape[1]
-          words = words.view(words.shape[0]*words.shape[1],words.shape[2])
-          chars = chars.view(chars.shape[0]*chars.shape[1],chars.shape[2])
+            # max_batch_len = words.shape[1]
+            words = words.view(words.shape[0]*words.shape[1],words.shape[2])
+            chars = chars.view(chars.shape[0]*chars.shape[1],chars.shape[2])
         src_word_embeds = self.word_embeddings(words)
         try:
-         char_embeds = self.char_embeddings(chars)
+            char_embeds = self.char_embeddings(chars)
         except Exceprion as e:
-          import pdb; pdb.set_trace()
+            import pdb; pdb.set_trace()
         char_embeds = char_embeds.permute(0, 2, 1)
 
         char_feature = torch.tanh(self.max_pool(self.conv1d(char_embeds)))
@@ -75,6 +75,8 @@ class Net(torch.nn.Module):
         self.dynamic_pooling1 = args.dynamic_pooling1
         self.dynamic_pooling2 = args.dynamic_pooling2
         self.dynamic_pooling3 = args.dynamic_pooling3
+        self.pooling_ratio_1_2 = 0.9
+        self.pooling_ratio_3 = 0.9
 
         self.conv1 = GCNConv(self.num_features, self.nhid)
         self.pool1 = KGPool(self.nhid, ratio=self.pooling_ratio_1_2, dynamic_pooling=self.dynamic_pooling1)
